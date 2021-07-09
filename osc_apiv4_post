@@ -48,9 +48,7 @@ region="eu-west-2"
 service="api"
 dateValue=`TZ=GMT date "+%Y%m%d"`
 dateValueIso=`TZ=GMT date "+%Y%m%dT%H%M%SZ"`
-# Use AWS CLI option --generate-cli-skeleton to get the --cli-input-json request_payload.
 request_payload=$( printf "{}" )
-# echo "DEBUG: request_payload (${#request_payload}) : ${request_payload}"
 
 #------------------------------------
 # Step 1 - Create canonical request.
@@ -72,7 +70,7 @@ ${request_payload_sha256}")
 # Step 2 - Create string to sign.
 #------------------------------------
 canonical_request_sha256=$( printf "${canonical_request}" | openssl dgst -binary -sha256 | xxd -p -c 256 )
-#echo ">canonical_request_sha256 : ${canonical_request_sha256}"
+
 ALGO="OSC4-HMAC-SHA256"
 stringToSign=$( printf "${ALGO}
 ${dateValueIso}
@@ -89,12 +87,12 @@ kRegion=$(   printf "${region}"        | openssl dgst -binary -sha256 -mac HMAC 
 kService=$(  printf "${service}"       | openssl dgst -binary -sha256 -mac HMAC -macopt hexkey:${kRegion}       | xxd -p -c 256 )
 kSigning=$(  printf "osc4_request"     | openssl dgst -binary -sha256 -mac HMAC -macopt hexkey:${kService}      | xxd -p -c 256 )
 signature=$( printf "${stringToSign}"  | openssl dgst -binary -hex -sha256 -mac HMAC -macopt hexkey:${kSigning} | sed 's/^.* //' )
-# echo "DEBUG: signature: ${signature}"
+
 
 #------------------------------------
 # Step 4 - Add signature to request.
 #------------------------------------
-#echo ">> ${#request_payload}"
+
 curl --request POST --silent \
      -H "Host: api.eu-west-2.outscale.com" \
      -H "Accept-Encoding: gzip, deflate" \
