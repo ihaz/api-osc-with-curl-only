@@ -34,8 +34,6 @@
 # This is based on info from the following link:
 # https://wiki.outscale.net/display/EN/About+Signatures+of+API+Requests
 # 
-# Author: Ilane Hazout - 20/05/2021
-# 
 # Get the version of oApi : curl -X POST https://api.eu-west-2.outscale.com/api/latest/
 # "Version": "1.10"
 
