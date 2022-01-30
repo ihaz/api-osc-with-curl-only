@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# BSD License for osc_apiv4_post.sh
+# BSD License for oApi-ReadVm.sh
 # Copyright (c) 2021, 
 # All rights reserved.
 # 
